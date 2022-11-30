@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShortUrl.App.Dtos;
 using ShortUrl.App.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ namespace ShortUrl.App.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
+        private readonly ITokenRepository _repository;
+
+        public TokenController(ITokenRepository repository)
+        {
+            _repository = repository;
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetItemById(int id)
         {
@@ -18,9 +26,10 @@ namespace ShortUrl.App.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddItem(Token item)
+        public async Task<ActionResult> AddItem(TokenCreateDto item)
         {
-            return Ok();
+            var TokenCreateDto = await _repository.CreateToken(item);
+            return Ok(TokenCreateDto);
         }
     }
 }

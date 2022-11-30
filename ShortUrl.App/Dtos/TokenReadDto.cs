@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShortUrl.App.Models
+namespace ShortUrl.App.Dtos
 {
-    public class Token
+    public class TokenReadDto
     {
-        public int Id { get; set; }
-
         public string OriginalUrl { get; set; }
 
         public string ShortUrl { get; set; }
