@@ -28,11 +28,12 @@ namespace ShortUrl.App.Controllers
             return Ok(itemList);
         }
 
-        [HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
+        [HttpGet("/{shortUrl}", Name = "GetTokenByUrl")]
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var token =  await _repository.GetTokenByUrl(shortUrl);
-            return Redirect(shortUrl);
+            return Ok(token);
+            //return RedirectToAction(actionName: nameof(GetTokenById), routeValues: token);
         }
 
         [HttpGet("{id:int}", Name = "GetTokenById")]

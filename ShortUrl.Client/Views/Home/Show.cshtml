@@ -27,8 +27,8 @@
             <span class="col-md-2">
                 <strong>Short URL:</strong>
             </span>
-            <a asp-controller="ShortUrls" asp-action="RedirectTo" asp-route-path="@ViewData["Path"]">
-                http://localhost:5000/ShortUrls/RedirectTo/@ViewData["Path"]
+            <a asp-controller="Redirect" asp-action="@Model.OriginalUrl" asp-route-path="">
+                http://localhost:5001/Redirect/@Model.OriginalUrl"
             </a>
         </li>
     </ul>

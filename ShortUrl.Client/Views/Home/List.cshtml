@@ -31,7 +31,9 @@
             {
                 <tr>
                     <td>
-                        @item.Id
+                        <a asp-controller="Home" asp-action="@Model.OriginalUrl" asp-route-path="">
+                            @item.Id
+                        </a>
                     </td>
                     <td>
                         @($"http://localhost:5001/{item.OriginalUrl}");

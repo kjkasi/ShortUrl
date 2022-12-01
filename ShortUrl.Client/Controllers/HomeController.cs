@@ -65,10 +65,29 @@ namespace ShortUrl.Client.Controllers
             return View(token);
         }
 
+        [HttpGet("{Action}/{originalUrl:string}")]
+        public IActionResult Redirect(string originalUrl)
+        {
+            return Redirect(originalUrl);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
+        /*
+        [HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
+        public async Task<IActionResult> GetTokenByUrl(string shortUrl)
+        {
+            HttpClient client = new HttpClient();
+            Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/{shortUrl}");
+            //return Ok(item);
+            return RedirectPermanent("http://www.ya.ru");
+            //return Redirect("redirect");
+            //return RedirectToAction(actionName: nameof(GetTokenById), routeValues: token);
+        }
+        */
     }
 }
