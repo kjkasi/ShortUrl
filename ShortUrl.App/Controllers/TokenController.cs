@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace ShortUrl.App.Controllers
 {
-    [Route("api/v1/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class TokenController : ControllerBase
     {
         private readonly ITokenRepository _repository;
@@ -22,7 +22,13 @@ namespace ShortUrl.App.Controllers
         }
 
         [HttpGet]
-        [Route("{shortUrl }")]
+        public async Task<ActionResult> GetTokens()
+        {
+            var itemList = await _repository.GetAllTokens();
+            return Ok(itemList);
+        }
+
+        [HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var token =  await _repository.GetTokenByUrl(shortUrl);

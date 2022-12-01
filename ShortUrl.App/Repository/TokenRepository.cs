@@ -35,6 +35,11 @@ namespace ShortUrl.App.Models
             return token;
         }
 
+        public async Task<IEnumerable<Token>> GetAllTokens()
+        {
+            return await _context.TokenItems.ToListAsync();
+        }
+
         public async Task<Token> GetTokenByUrl(string shortUrl)
         {
             Token token = await _context.TokenItems.Where(x => x.ShortUrl == shortUrl).FirstOrDefaultAsync();
