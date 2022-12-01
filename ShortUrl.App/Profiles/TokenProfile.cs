@@ -15,7 +15,7 @@ namespace ShortUrl.App.Profiles
             // Source -> Target
             CreateMap<Token, TokenCreateDto>();
             CreateMap<TokenCreateDto, Token>();
-            CreateMap<TokenReadDto, TokenCreateDto>();
+            CreateMap<Token, TokenReadDto>();
         }
     }
 }

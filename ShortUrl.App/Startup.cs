@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using ShortUrl.App.Dtos;
 using ShortUrl.App.Models;
 using ShortUrl.App.Models.Contexts;
+using ShortUrl.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace ShortUrl.App
             services.AddDbContext<AppDbContext>(opt =>
                      opt.UseInMemoryDatabase("InMem"));
             services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -40,6 +42,7 @@ namespace ShortUrl.App
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShortUrl.App", Version = "v1" });
             });
 
+            /*
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Token, TokenCreateDto>();
@@ -48,7 +51,9 @@ namespace ShortUrl.App
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            */
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +66,7 @@ namespace ShortUrl.App
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShortUrl.App v1"));
             }
 
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             app.UseRouting();

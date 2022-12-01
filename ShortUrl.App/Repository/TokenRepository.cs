@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShortUrl.App.Dtos;
 using ShortUrl.App.Models.Contexts;
+using ShortUrl.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,25 +14,31 @@ namespace ShortUrl.App.Models
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ITokenService _service;
 
-        public TokenRepository(AppDbContext context, IMapper mapper)
+        public TokenRepository(AppDbContext context, IMapper mapper, ITokenService service)
         {
             _context = context;
             _mapper = mapper;
+            _service = service;
         }
 
-        public async Task<TokenReadDto> CreateToken(TokenCreateDto token)
+        public async Task<Token> CreateToken(Token token)
         {
-            Token createItem = _mapper.Map<TokenCreateDto, Token>(token);
+            _context.Add(token);
 
-            _context.Add(createItem);
+            string shortUrl = _service.Encode(token.Id);
+
+            token.ShortUrl = shortUrl;
+
             await _context.SaveChangesAsync();
-            return _mapper.Map<Token, TokenReadDto>(createItem);
+            return token;
         }
 
-        public Task<TokenReadDto> GetTokenById(int tokenId)
+        public async Task<Token> GetTokenByUrl(string shortUrl)
         {
-            throw new NotImplementedException();
+            Token token = await _context.TokenItems.Where(x => x.ShortUrl == shortUrl).FirstOrDefaultAsync();
+            return token;
         }
     }
 }

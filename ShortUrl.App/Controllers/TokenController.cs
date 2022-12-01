@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ShortUrl.App.Dtos;
 using ShortUrl.App.Models;
+using ShortUrl.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +22,30 @@ namespace ShortUrl.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetItemById(int id)
+        public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
-            return Ok();
+            var token =  await _repository.GetTokenByUrl(shortUrl);
+            return Ok(shortUrl);
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddItem(TokenCreateDto item)
+        public async Task<ActionResult> AddItem(string originalUrl)
         {
-            var TokenCreateDto = await _repository.CreateToken(item);
-            return Ok(TokenCreateDto);
+
+            Token item = new Token
+            {
+                OriginalUrl = originalUrl
+            };
+
+            TryValidateModel(item);
+            if (ModelState.IsValid)
+            {
+                var token = await _repository.CreateToken(item);
+                return StatusCode(StatusCodes.Status201Created, token);
+
+            }
+            
+            return StatusCode(StatusCodes.Status400BadRequest, item);
         }
     }
 }

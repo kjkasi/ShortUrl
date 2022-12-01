@@ -8,7 +8,7 @@ namespace ShortUrl.App.Models
 {
     public interface ITokenRepository
     {
-        Task<TokenReadDto> GetTokenById(int tokenId);
-        Task<TokenReadDto> CreateToken(TokenCreateDto token);
+        Task<Token> CreateToken(Token token);
+        Task<Token> GetTokenByUrl(string shortUrl);
     }
 }
