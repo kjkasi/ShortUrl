@@ -12,5 +12,10 @@ namespace ShortUrl.App.Controllers
         {
             return new RedirectResult("~/swagger");
         }
+
+        public async Task<ActionResult> Test()
+        {
+            return Ok("Test page");
+        }
     }
 }
