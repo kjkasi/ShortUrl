@@ -21,7 +21,7 @@ namespace ShortUrl.App.Models.Contexts
                 new Token
                 {
                     Id = 1,
-                    OriginalUrl = "ya.ru",
+                    OriginalUrl = "http://ya.ru",
                     ShortUrl = "3"
                 },
                 new Token

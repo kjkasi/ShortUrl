@@ -7,17 +7,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace ShortUrl.Client.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHttpClientFactory httpClientFactory)
         {
-            _logger = logger;
+            _httpClientFactory = httpClientFactory;
         }
 
         public IActionResult Index()
@@ -32,12 +33,22 @@ namespace ShortUrl.Client.Controllers
 
         public async Task<IActionResult> List()
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = _httpClientFactory.CreateClient();
 
             List<Token> items = await client.GetFromJsonAsync<List<Token>>("http://localhost:5000/Token");
 
             return View(items);
         }
+
+        public async Task<IActionResult> List(int id)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+
+            List<Token> items = await client.GetFromJsonAsync<List<Token>>("http://localhost:5000/Token");
+
+            return View(items);
+        }
+
 
         public async Task<IActionResult> Create(string originalUrl)
         {
@@ -49,8 +60,8 @@ namespace ShortUrl.Client.Controllers
             TryValidateModel(item);
             if (ModelState.IsValid)
             {
-                HttpClient client = new HttpClient();
-                var response = await client.PostAsJsonAsync<Token>("http://localhost:5000/Token", item);
+                HttpClient client = _httpClientFactory.CreateClient();
+                var response = await client.PostAsJsonAsync("http://localhost:5000/Token", item);
                 Token? token = await response.Content.ReadFromJsonAsync<Token>();
                 return RedirectToAction(actionName: nameof(Show), routeValues: token);
             }
@@ -58,18 +69,32 @@ namespace ShortUrl.Client.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Show(Token token)
+        public async Task<IActionResult> Show(int id)
         {
-            //HttpClient client = new HttpClient();
-            //Token item = await client.GetFromJsonAsync<Token>("http://localhost:5000/Token");
-            return View(token);
+            HttpClient client = new HttpClient();
+            Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{id}");
+            return View(item);
         }
 
-        [HttpGet("{Action}/{originalUrl:string}")]
+        /*
+        public async Task<IActionResult> Show(string shortUrl)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+            Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{shortUrl}");
+            return View(item);
+        }
+        */
+
+        /*
+        [HttpGet("{Action}/{originalUrl}")]
         public IActionResult Redirect(string originalUrl)
         {
-            return Redirect(originalUrl);
+            var url = new Url(originalUrl);
+            Console.WriteLine(originalUrl);
+            Console.WriteLine(url);
+            return RedirectPermanentPreserveMethod(originalUrl);
         }
+        */
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -77,17 +102,12 @@ namespace ShortUrl.Client.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         
-        /*
         [HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
         public async Task<IActionResult> GetTokenByUrl(string shortUrl)
         {
             HttpClient client = new HttpClient();
             Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/{shortUrl}");
-            //return Ok(item);
-            return RedirectPermanent("http://www.ya.ru");
-            //return Redirect("redirect");
-            //return RedirectToAction(actionName: nameof(GetTokenById), routeValues: token);
+            return RedirectPermanentPreserveMethod(item.OriginalUrl);
         }
-        */
     }
 }
