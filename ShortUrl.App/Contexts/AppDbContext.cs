@@ -12,5 +12,25 @@ namespace ShortUrl.App.Models.Contexts
         {
         }
         public DbSet<Token> TokenItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Token>().HasData(
+                new Token
+                {
+                    Id = 1,
+                    OriginalUrl = "ya.ru",
+                    ShortUrl = "3"
+                },
+                new Token
+                {
+                    Id = 2,
+                    OriginalUrl = "ay.ru",
+                    ShortUrl = "4"
+                }
+            );
+        }
     }
 }

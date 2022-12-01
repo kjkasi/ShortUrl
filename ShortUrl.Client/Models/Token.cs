@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShortUrl.App.Models
+namespace ShortUrl.Client.Models
 {
     public class Token
     {
