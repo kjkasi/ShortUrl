@@ -27,9 +27,10 @@ namespace ShortUrl.App.Models
         {
             _context.Add(token);
 
+            //Guid.NewGuid().ToString();
             string shortUrl = _service.Encode(token.Id);
 
-            token.ShortUrl = $"localhost:5000/api/v1/Token/{shortUrl}";
+            token.ShortUrl = shortUrl;//$"localhost:5000/api/v1/Token/{shortUrl}";
 
             await _context.SaveChangesAsync();
             return token;
@@ -38,6 +39,12 @@ namespace ShortUrl.App.Models
         public async Task<IEnumerable<Token>> GetAllTokens()
         {
             return await _context.TokenItems.ToListAsync();
+        }
+
+        public async Task<Token> GetTokenById(int id)
+        {
+            Token item = await _context.TokenItems.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return item;
         }
 
         public async Task<Token> GetTokenByUrl(string shortUrl)

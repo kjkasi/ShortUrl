@@ -34,7 +34,7 @@
                         @item.Id
                     </td>
                     <td>
-                        @item.OriginalUrl
+                        @($"http://localhost:5001/{item.OriginalUrl}");
                     </td>
                     <td>
                         @item.ShortUrl
