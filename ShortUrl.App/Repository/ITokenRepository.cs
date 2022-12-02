@@ -13,5 +13,6 @@ namespace ShortUrl.App.Models
         Task<Token> GetTokenByUrl(string shortUrl);
         Task<IEnumerable<Token>> GetAllTokens();
         Task<Token> GetTokenById(int id);
+        Task<bool> DeleteToken(int id);
     }
 }

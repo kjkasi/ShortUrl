@@ -31,7 +31,7 @@ namespace ShortUrl.App.Controllers
         [HttpGet("/{shortUrl}", Name = "GetTokenByUrl")]
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
-            var token =  await _repository.GetTokenByUrl(shortUrl);
+            var token = await _repository.GetTokenByUrl(shortUrl);
             return Ok(token);
         }
 
@@ -47,6 +47,13 @@ namespace ShortUrl.App.Controllers
         {
             var token = await _repository.CreateToken(item);
             return StatusCode(StatusCodes.Status201Created, token);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteItem(int id)
+        {
+            var result = await _repository.DeleteToken(id);
+            return Ok(result);
         }
     }
 }

@@ -27,13 +27,27 @@ namespace ShortUrl.App.Models
         {
             _context.Add(token);
 
-            //Guid.NewGuid().ToString();
             string shortUrl = _service.Encode(token.Id);
 
             token.ShortUrl = shortUrl;
 
             await _context.SaveChangesAsync();
             return token;
+        }
+
+        public async Task<bool> DeleteToken(int id)
+        {
+            try
+            {
+                Token item = await _context.TokenItems.FirstOrDefaultAsync(u => u.Id == id);
+                _context.Remove(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<IEnumerable<Token>> GetAllTokens()

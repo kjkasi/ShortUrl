@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShortUrl.Client.Models;
 using System;
@@ -21,9 +22,11 @@ namespace ShortUrl.Client.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            HttpClient client = _httpClientFactory.CreateClient();
+            List<Token> items = await client.GetFromJsonAsync<List<Token>>("http://localhost:5000/Token");
+            return View(items);
         }
 
         public IActionResult Privacy()
@@ -31,15 +34,12 @@ namespace ShortUrl.Client.Controllers
             return View();
         }
 
-        public async Task<IActionResult> List()
+        public IActionResult Create() 
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-
-            List<Token> items = await client.GetFromJsonAsync<List<Token>>("http://localhost:5000/Token");
-
-            return View(items);
+            return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create(string originalUrl)
         {
             Token item = new Token
@@ -53,19 +53,46 @@ namespace ShortUrl.Client.Controllers
                 HttpClient client = _httpClientFactory.CreateClient();
                 var response = await client.PostAsJsonAsync("http://localhost:5000/Token", item);
                 Token? token = await response.Content.ReadFromJsonAsync<Token>();
-                return RedirectToAction(actionName: nameof(Show), routeValues: token);
+                return RedirectToAction(actionName: nameof(Details), routeValues: token);
             }
 
             return View();
         }
 
-        public async Task<IActionResult> Show(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
             Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{id}");
             return View(item);
         }
-   
+
+        public async Task<IActionResult> Details(int id)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+            Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{id}");
+            return View(item);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+            Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{id}");
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteItem(int id)
+        {
+            HttpClient client = _httpClientFactory.CreateClient();
+            //client.BaseAddress = new Uri("http://localhost:5000");
+            var response = await client.DeleteAsync($"http://localhost:5000/Token/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Error");//StatusCode(StatusCodes.Status202Accepted, id);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
