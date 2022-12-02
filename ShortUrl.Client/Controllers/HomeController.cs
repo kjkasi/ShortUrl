@@ -40,6 +40,7 @@ namespace ShortUrl.Client.Controllers
             return View(items);
         }
 
+        /*
         public async Task<IActionResult> List(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -48,6 +49,7 @@ namespace ShortUrl.Client.Controllers
 
             return View(items);
         }
+        */
 
 
         public async Task<IActionResult> Create(string originalUrl)
@@ -71,7 +73,7 @@ namespace ShortUrl.Client.Controllers
 
         public async Task<IActionResult> Show(int id)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = _httpClientFactory.CreateClient();
             Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/Token/{id}");
             return View(item);
         }
@@ -101,11 +103,12 @@ namespace ShortUrl.Client.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
-        [HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
+
+        //[HttpGet("{shortUrl}", Name = "GetTokenByUrl")]
+        [HttpGet("{shortUrl}")]
         public async Task<IActionResult> GetTokenByUrl(string shortUrl)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = _httpClientFactory.CreateClient();
             Token item = await client.GetFromJsonAsync<Token>($"http://localhost:5000/{shortUrl}");
             return RedirectPermanentPreserveMethod(item.OriginalUrl);
         }
