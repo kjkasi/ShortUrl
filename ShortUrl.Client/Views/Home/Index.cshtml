@@ -34,10 +34,9 @@
                 @Html.DisplayFor(modelItem => item.OriginalUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShortUrl)
+                <a asp-controller="/@item.ShortUrl">http://localhost:5001/@item.ShortUrl</a>
             </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
                 @Html.ActionLink("Details", "Details", new { id=item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>

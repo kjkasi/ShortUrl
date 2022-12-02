@@ -100,7 +100,7 @@ namespace ShortUrl.Client.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet("{shortUrl}")]
+        [HttpGet("~/{shortUrl}", Name = "Redirect")]
         public async Task<IActionResult> GetTokenByUrl(string shortUrl)
         {
             HttpClient client = _httpClientFactory.CreateClient();

@@ -27,7 +27,7 @@ namespace ShortUrl.App.Models.Contexts
                 new Token
                 {
                     Id = 2,
-                    OriginalUrl = "http://localhost:5001/Home/Privacy",
+                    OriginalUrl = "http://localhost:5001/home/privacy",
                     ShortUrl = "4"
                 }
             );
