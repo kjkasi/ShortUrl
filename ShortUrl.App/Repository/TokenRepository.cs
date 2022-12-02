@@ -30,7 +30,7 @@ namespace ShortUrl.App.Models
             //Guid.NewGuid().ToString();
             string shortUrl = _service.Encode(token.Id);
 
-            token.ShortUrl = shortUrl;//$"localhost:5000/api/v1/Token/{shortUrl}";
+            token.ShortUrl = shortUrl;
 
             await _context.SaveChangesAsync();
             return token;

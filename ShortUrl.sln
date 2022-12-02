@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.32630.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.App", "ShortUrl.App\ShortUrl.App.csproj", "{7FC37648-2690-4E8E-B683-23F99EC58F48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.Client", "ShortUrl.Client\ShortUrl.Client.csproj", "{CB421A65-73A0-49BD-80B2-C5A65298F336}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.Api", "ShortUrl.Api\ShortUrl.Api.csproj", "{9B49F2EC-B488-426C-AEB3-0563C85CBEAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.Client", "ShortUrl.Client\ShortUrl.Client.csproj", "{CB421A65-73A0-49BD-80B2-C5A65298F336}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{CB421A65-73A0-49BD-80B2-C5A65298F336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB421A65-73A0-49BD-80B2-C5A65298F336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB421A65-73A0-49BD-80B2-C5A65298F336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B49F2EC-B488-426C-AEB3-0563C85CBEAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B49F2EC-B488-426C-AEB3-0563C85CBEAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B49F2EC-B488-426C-AEB3-0563C85CBEAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B49F2EC-B488-426C-AEB3-0563C85CBEAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

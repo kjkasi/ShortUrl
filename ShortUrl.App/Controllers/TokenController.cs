@@ -33,7 +33,6 @@ namespace ShortUrl.App.Controllers
         {
             var token =  await _repository.GetTokenByUrl(shortUrl);
             return Ok(token);
-            //return RedirectToAction(actionName: nameof(GetTokenById), routeValues: token);
         }
 
         [HttpGet("{id:int}", Name = "GetTokenById")]
@@ -46,23 +45,8 @@ namespace ShortUrl.App.Controllers
         [HttpPost]
         public async Task<ActionResult> AddItem(Token item)
         {
-
-            //Token item = new Token
-            //{
-            //    OriginalUrl = originalUrl
-            //};
-
-            TryValidateModel(item);
-            if (ModelState.IsValid)
-            {
-                
-                
-
-            }
             var token = await _repository.CreateToken(item);
             return StatusCode(StatusCodes.Status201Created, token);
-            //return CreatedAtAction(nameof(GetTokenById), new { id = item.Id }, null);
-            //return StatusCode(StatusCodes.Status400BadRequest, item);
         }
     }
 }
