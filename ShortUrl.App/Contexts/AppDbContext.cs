@@ -29,6 +29,12 @@ namespace ShortUrl.App.Models.Contexts
                     Id = 2,
                     OriginalUrl = "http://localhost:5001/home/privacy",
                     ShortUrl = "4"
+                },
+                new Token
+                {
+                    Id = 3,
+                    OriginalUrl = "https://translate.yandex.ru/",
+                    ShortUrl = "5"
                 }
             );
         }
