@@ -32,6 +32,7 @@ namespace ShortUrl.App.Controllers
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var token = await _repository.GetTokenByUrl(shortUrl);
+            //todo проверить на нулл
             return Ok(token);
         }
 

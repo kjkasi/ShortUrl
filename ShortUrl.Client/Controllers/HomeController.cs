@@ -84,7 +84,6 @@ namespace ShortUrl.Client.Controllers
         public async Task<IActionResult> DeleteItem(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-            //client.BaseAddress = new Uri("http://localhost:5000");
             var response = await client.DeleteAsync($"http://localhost:5000/Token/{id}");
             if (response.IsSuccessStatusCode)
             {
