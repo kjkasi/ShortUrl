@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  shorturl.api:
+    image: ${DOCKER_REGISTRY-}shorturlapi
+    build:
+      context: .
+      dockerfile: ShortUrl.Api/Dockerfile
+
+  shorturl.web:
+    image: ${DOCKER_REGISTRY-}shorturlweb
+    build:
+      context: .
+      dockerfile: ShortUrl.Web/Dockerfile
+    depends_on:
+      - shorturl.api
+
