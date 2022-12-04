@@ -23,19 +23,22 @@ namespace ShortUrl.Api.Data
                 {
                     Id = 1,
                     OriginalUrl = "http://ya.ru",
-                    ShortUrl = _aliasService.ConfusionConvert(1)
+                    ShortUrl = _aliasService.ConfusionConvert(1),
+                    FileName = "placeholder.png"
                 },
                 new Item
                 {
                     Id = 2,
                     OriginalUrl = "http://localhost:5001/home/privacy",
-                    ShortUrl = _aliasService.ConfusionConvert(2)
+                    ShortUrl = _aliasService.ConfusionConvert(2),
+                    FileName = "placeholder.png"
                 },
                 new Item
                 {
                     Id = 3,
                     OriginalUrl = "https://translate.yandex.ru/",
-                    ShortUrl = _aliasService.ConfusionConvert(3)
+                    ShortUrl = _aliasService.ConfusionConvert(3),
+                    FileName = "placeholder.png"
                 }
             );
         }

@@ -29,6 +29,12 @@
         <dd class = "col-sm-10">
             <a href="http://localhost:5001/@Model.ShortUrl">http://localhost:5001/@Model.ShortUrl</a>
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
     </dl>
     
     <form asp-action="DeleteItem" asp-route-id="@Model.Id">

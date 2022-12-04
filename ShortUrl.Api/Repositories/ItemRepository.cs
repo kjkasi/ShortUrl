@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IronBarCode;
+using Microsoft.EntityFrameworkCore;
 using ShortUrl.Api.Data;
 using ShortUrl.Api.Models;
 using ShortUrl.Api.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,24 +14,29 @@ namespace ShortUrl.Api.Repositories
     public class ItemRepository : IItemRepository
     {
         private readonly ItemContext _context;
-        private readonly IItemService _service;
         private readonly IAliasService _aliasService;
 
-        public ItemRepository(ItemContext context, IItemService service, IAliasService aliasService)
+        public ItemRepository(ItemContext context, IAliasService aliasService)
         {
             _context = context;
-            _service = service;
             _aliasService = aliasService;
         }
 
         public async Task<Item> CreateItem(Item item)
         {
             _context.Add(item);
+            await _context.SaveChangesAsync();
 
-            //string shortUrl = _service.Encode(item.Id);
             string shortUrl = _aliasService.ConfusionConvert(item.Id);
 
+            var fileName = Path.GetFileName($"{shortUrl}.png");
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images", fileName);
+
+            var qr = QRCodeWriter.CreateQrCode($"http://localhost:5000/images/{fileName}", 500, QRCodeWriter.QrErrorCorrectionLevel.Low);
+            qr.SaveAsPng(filePath);
+
             item.ShortUrl = shortUrl;
+            item.FileName = fileName;
 
             await _context.SaveChangesAsync();
             return item;

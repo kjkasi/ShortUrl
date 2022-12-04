@@ -25,8 +25,14 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ShortUrl)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             <a href="http://localhost:5001/@Model.ShortUrl">http://localhost:5001/@Model.ShortUrl</a>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+        <dd class="col-sm-10">
+           <a href="http://localhost:5000/images/@Model.FileName">http://localhost:5000/images/@Model.FileName</a>
         </dd>
     </dl>
 </div>

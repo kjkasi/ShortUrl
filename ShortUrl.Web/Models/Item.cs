@@ -9,5 +9,6 @@ namespace ShortUrl.Web.Models
         [DataType(DataType.Url)]
         public string OriginalUrl { get; set; }
         public string ShortUrl { get; set; }
+        public string FileName { get; set; }
     }
 }

@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: ShortUrl.Api/Dockerfile
+    depends_on:
+      - sqldata
 
   shorturl.web:
     image: ${DOCKER_REGISTRY-}shorturlweb
@@ -14,4 +16,6 @@ services:
       dockerfile: ShortUrl.Web/Dockerfile
     depends_on:
       - shorturl.api
-
+   
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest

@@ -30,12 +30,12 @@ namespace ShortUrl.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ItemContext>(opt =>
-                     opt.UseInMemoryDatabase("InMem"));
+                     opt.UseSqlServer("Server=sqldata;Initial Catalog=Item;User Id=sa;Password=Pass@word;TrustServerCertificate=True"));
             services.AddScoped<IItemRepository, ItemRepository>();
-            services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IAliasService, AliasService>(a => 
                 new AliasService("s9LFkgy5RovixI1aOf8UhdY3r4DMplQZJXPqebE0WSjBn7wVzmN2Gc6THCAKut")
             );
+            //services.AddScoped<IFileService, FileService>();
 
             services.Configure<RouteOptions>(options =>
             {
@@ -63,6 +63,7 @@ namespace ShortUrl.Api
             context.Database.EnsureCreated();
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
