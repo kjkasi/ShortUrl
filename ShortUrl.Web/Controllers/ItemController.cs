@@ -22,10 +22,19 @@ namespace ShortUrl.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //HttpClient client = _httpClientFactory.CreateClient();
+            //List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/item");
+            //return View(items);
+            return RedirectToAction("Create");
+        }
+
+        public async Task<IActionResult> Items()
+        {
             HttpClient client = _httpClientFactory.CreateClient();
             List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/item");
             return View(items);
         }
+
 
         public IActionResult Privacy()
         {
@@ -86,7 +95,7 @@ namespace ShortUrl.Web.Controllers
             var response = await client.DeleteAsync($"http://host.docker.internal:5000/item/{id}");
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Items");
             }
             return RedirectToAction("Error");
         }

@@ -31,7 +31,12 @@ namespace ShortUrl.Api.Controllers
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var item = await _repository.GetItemByUrl(shortUrl);
-            //todo проверить на нулл
+            
+            if (item == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, null);
+            }
+
             return Ok(item);
         }
 
