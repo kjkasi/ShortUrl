@@ -13,18 +13,21 @@ namespace ShortUrl.Api.Repositories
     {
         private readonly ItemContext _context;
         private readonly IItemService _service;
+        private readonly IAliasService _aliasService;
 
-        public ItemRepository(ItemContext context, IItemService service)
+        public ItemRepository(ItemContext context, IItemService service, IAliasService aliasService)
         {
             _context = context;
             _service = service;
+            _aliasService = aliasService;
         }
 
         public async Task<Item> CreateItem(Item item)
         {
             _context.Add(item);
 
-            string shortUrl = _service.Encode(item.Id);
+            //string shortUrl = _service.Encode(item.Id);
+            string shortUrl = _aliasService.ConfusionConvert(item.Id);
 
             item.ShortUrl = shortUrl;
 

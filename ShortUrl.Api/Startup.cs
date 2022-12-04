@@ -33,6 +33,9 @@ namespace ShortUrl.Api
                      opt.UseInMemoryDatabase("InMem"));
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IAliasService, AliasService>(a => 
+                new AliasService("s9LFkgy5RovixI1aOf8UhdY3r4DMplQZJXPqebE0WSjBn7wVzmN2Gc6THCAKut")
+            );
 
             services.Configure<RouteOptions>(options =>
             {
