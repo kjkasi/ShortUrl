@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShortUrl.Api.Models;
+using ShortUrl.Api.Services;
 
 namespace ShortUrl.Api.Data
 {
     public class ItemContext : DbContext
     {
-        public ItemContext(DbContextOptions<ItemContext> options)
+        private readonly IAliasService _aliasService;
+
+        public ItemContext(DbContextOptions<ItemContext> options, IAliasService aliasService)
             : base(options)
         {
+            _aliasService = aliasService;
         }
 
         public DbSet<Item> Items { get; set; }
@@ -19,19 +23,19 @@ namespace ShortUrl.Api.Data
                 {
                     Id = 1,
                     OriginalUrl = "http://ya.ru",
-                    ShortUrl = "3"
+                    ShortUrl = _aliasService.ConfusionConvert(1)
                 },
                 new Item
                 {
                     Id = 2,
                     OriginalUrl = "http://localhost:5001/home/privacy",
-                    ShortUrl = "4"
+                    ShortUrl = _aliasService.ConfusionConvert(2)
                 },
                 new Item
                 {
                     Id = 3,
                     OriginalUrl = "https://translate.yandex.ru/",
-                    ShortUrl = "5"
+                    ShortUrl = _aliasService.ConfusionConvert(3)
                 }
             );
         }
