@@ -34,7 +34,7 @@ namespace ShortUrl.Api.Controllers
         [Route("GetTokenByUrl/{shortUrl}")]
         [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> GetTokenByUrl(string shortUrl)
+        public async Task<ActionResult> GetItemByUrl(string shortUrl)
         {
             var item = await _repository.GetItemByUrl(shortUrl);
             
@@ -50,7 +50,7 @@ namespace ShortUrl.Api.Controllers
         [Route("GetTokenById/{id:int}")]
         [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> GetTokenById(int id)
+        public async Task<ActionResult> GetItemById(int id)
         {
             var item = await _repository.GetItemById(id);
             if (item is null)
