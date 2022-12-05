@@ -20,33 +20,25 @@ namespace ShortUrl.Web.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
+        [Route("")]
         public async Task<IActionResult> Index()
-        {
-            //HttpClient client = _httpClientFactory.CreateClient();
-            //List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/item");
-            //return View(items);
-            return RedirectToAction("Create");
-        }
-
-        public async Task<IActionResult> Items()
         {
             HttpClient client = _httpClientFactory.CreateClient();
             List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/item");
             return View(items);
         }
 
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        [HttpGet]
+        [Route("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
+
         [HttpPost]
+        [Route("Create")]
         public async Task<IActionResult> Create(string originalUrl)
         {
             Item item = new Item
@@ -67,13 +59,8 @@ namespace ShortUrl.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Edit(int id)
-        {
-            HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/item/{id}");
-            return View(item);
-        }
-
+        [HttpGet]
+        [Route("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -81,6 +68,8 @@ namespace ShortUrl.Web.Controllers
             return View(item);
         }
 
+        [HttpGet]
+        [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -89,29 +78,40 @@ namespace ShortUrl.Web.Controllers
         }
 
         [HttpPost]
+        [Route("Delete")]
         public async Task<IActionResult> DeleteItem(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
             var response = await client.DeleteAsync($"http://host.docker.internal:5000/item/{id}");
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Items");
+                return RedirectToAction("Index");
             }
             return RedirectToAction("Error");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        [HttpGet("~/{shortUrl}", Name = "Redirect")]
+        [HttpGet]
+        [Route("{shortUrl}")]
         public async Task<IActionResult> GetTokenByUrl(string shortUrl)
         {
             HttpClient client = _httpClientFactory.CreateClient();
             Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/{shortUrl}");
-            return RedirectPermanentPreserveMethod(item.OriginalUrl);
+            return Redirect(item.OriginalUrl);
+        }
+
+        [HttpGet]
+        [Route("Privacy")]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("Error")]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

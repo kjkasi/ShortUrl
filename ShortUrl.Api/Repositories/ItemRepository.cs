@@ -32,7 +32,7 @@ namespace ShortUrl.Api.Repositories
             var fileName = Path.GetFileName($"{shortUrl}.png");
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/images", fileName);
 
-            var qr = QRCodeWriter.CreateQrCode($"http://localhost:5000/images/{fileName}", 500, QRCodeWriter.QrErrorCorrectionLevel.Low);
+            var qr = QRCodeWriter.CreateQrCode($"http://localhost:5000/images/{fileName}", 150, QRCodeWriter.QrErrorCorrectionLevel.Low);
             qr.SaveAsPng(filePath);
 
             item.ShortUrl = shortUrl;

@@ -1,4 +1,5 @@
 ﻿@model ShortUrl.Web.Models.Item
+@inject ShortUrl.Web.Services.IFormatService formatter
 
 @{
     ViewData["Title"] = "Details";
@@ -26,16 +27,16 @@
             @Html.DisplayNameFor(model => model.ShortUrl)
         </dt>
         <dd class="col-sm-10">
-            <a href="http://localhost:5001/@Model.ShortUrl">http://localhost:5001/@Model.ShortUrl</a>
+            <a href=@formatter.GetFormattedShortUrl(Model.ShortUrl)>@formatter.GetFormattedShortUrl(Model.ShortUrl)</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FileName)
         </dt>
         <dd class="col-sm-10">
-           <a href="http://localhost:5000/images/@Model.FileName">http://localhost:5000/images/@Model.FileName</a>
+           <img alt=@Model.OriginalUrl src=@formatter.GetFormattedFileName(Model.FileName) width="150" height="150" />
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Back to Items</a>
+    <a asp-action="Index">Back to Home</a>
 </div>

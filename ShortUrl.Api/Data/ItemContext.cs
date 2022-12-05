@@ -29,7 +29,7 @@ namespace ShortUrl.Api.Data
                 new Item
                 {
                     Id = 2,
-                    OriginalUrl = "http://localhost:5001/home/privacy",
+                    OriginalUrl = "http://localhost:5001/privacy",
                     ShortUrl = _aliasService.ConfusionConvert(2),
                     FileName = "placeholder.png"
                 },
