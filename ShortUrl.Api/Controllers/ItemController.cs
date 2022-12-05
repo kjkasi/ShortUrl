@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShortUrl.Api.Models;
 using ShortUrl.Api.Repositories;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ShortUrl.Api.Controllers
@@ -21,6 +23,7 @@ namespace ShortUrl.Api.Controllers
 
         [HttpGet]
         [Route("GetItems")]
+        [ProducesResponseType(typeof(IEnumerable<Item>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetItems()
         {
             var itemList = await _repository.GetAllItems();
@@ -29,11 +32,13 @@ namespace ShortUrl.Api.Controllers
 
         [HttpGet]
         [Route("GetTokenByUrl/{shortUrl}")]
+        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var item = await _repository.GetItemByUrl(shortUrl);
             
-            if (item == null)
+            if (item is null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, null);
             }
@@ -43,14 +48,21 @@ namespace ShortUrl.Api.Controllers
 
         [HttpGet]
         [Route("GetTokenById/{id:int}")]
+        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetTokenById(int id)
         {
             var item = await _repository.GetItemById(id);
+            if (item is null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, null);
+            }
             return Ok(item);
         }
 
         [HttpPost]
         [Route("AddItem")]
+        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.Created)]
         public async Task<ActionResult> AddItem(Item item)
         {
             var newItem = await _repository.CreateItem(item);
@@ -59,6 +71,7 @@ namespace ShortUrl.Api.Controllers
 
         [HttpDelete]
         [Route("DeleteItem/{id:int}")]
+        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> DeleteItem(int id)
         {
             var result = await _repository.DeleteItem(id);

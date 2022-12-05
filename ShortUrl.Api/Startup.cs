@@ -36,11 +36,6 @@ namespace ShortUrl.Api
                 new AliasService("s9LFkgy5RovixI1aOf8UhdY3r4DMplQZJXPqebE0WSjBn7wVzmN2Gc6THCAKut")
             );
 
-            services.Configure<RouteOptions>(options =>
-            {
-                options.LowercaseUrls = true;
-            });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
