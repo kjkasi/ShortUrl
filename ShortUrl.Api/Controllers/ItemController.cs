@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace ShortUrl.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class ItemController : ControllerBase
     {
         private readonly ILogger<ItemController> _logger;
@@ -21,13 +20,15 @@ namespace ShortUrl.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetTokens()
+        [Route("GetItems")]
+        public async Task<ActionResult> GetItems()
         {
             var itemList = await _repository.GetAllItems();
             return Ok(itemList);
         }
 
-        [HttpGet("/{shortUrl}", Name = "GetTokenByUrl")]
+        [HttpGet]
+        [Route("GetTokenByUrl/{shortUrl}")]
         public async Task<ActionResult> GetTokenByUrl(string shortUrl)
         {
             var item = await _repository.GetItemByUrl(shortUrl);
@@ -40,7 +41,8 @@ namespace ShortUrl.Api.Controllers
             return Ok(item);
         }
 
-        [HttpGet("{id:int}", Name = "GetTokenById")]
+        [HttpGet]
+        [Route("GetTokenById/{id:int}")]
         public async Task<ActionResult> GetTokenById(int id)
         {
             var item = await _repository.GetItemById(id);
@@ -48,13 +50,15 @@ namespace ShortUrl.Api.Controllers
         }
 
         [HttpPost]
+        [Route("AddItem")]
         public async Task<ActionResult> AddItem(Item item)
         {
             var newItem = await _repository.CreateItem(item);
             return StatusCode(StatusCodes.Status201Created, newItem);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("DeleteItem/{id:int}")]
         public async Task<ActionResult> DeleteItem(int id)
         {
             var result = await _repository.DeleteItem(id);

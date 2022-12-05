@@ -35,7 +35,6 @@ namespace ShortUrl.Api
             services.AddScoped<IAliasService, AliasService>(a => 
                 new AliasService("s9LFkgy5RovixI1aOf8UhdY3r4DMplQZJXPqebE0WSjBn7wVzmN2Gc6THCAKut")
             );
-            //services.AddScoped<IFileService, FileService>();
 
             services.Configure<RouteOptions>(options =>
             {
@@ -69,7 +68,7 @@ namespace ShortUrl.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
