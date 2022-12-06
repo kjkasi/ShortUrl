@@ -64,7 +64,7 @@ namespace ShortUrl.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetTokenById/{id}");
+            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
             return View(item);
         }
 
@@ -73,7 +73,7 @@ namespace ShortUrl.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetTokenById/{id}");
+            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
             return View(item);
         }
 

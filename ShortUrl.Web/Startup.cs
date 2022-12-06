@@ -52,9 +52,6 @@ namespace ShortUrl.Web
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=item}/{action=index}/{id?}");
                 endpoints.MapDefaultControllerRoute();
             });
         }
