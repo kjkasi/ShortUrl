@@ -24,9 +24,17 @@ namespace ShortUrl.Web.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-            List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/GetItems");
-            return View(items);
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient();
+                List<Item> items = await client.GetFromJsonAsync<List<Item>>("http://host.docker.internal:5000/GetItems");
+                return View(items);
+            }
+            catch(HttpRequestException ex )
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(new List<Item>());
+            }
         }
 
         [HttpGet]
@@ -46,8 +54,7 @@ namespace ShortUrl.Web.Controllers
                 OriginalUrl = originalUrl
             };
 
-            TryValidateModel(item);
-            if (ModelState.IsValid)
+            try
             {
                 HttpClient client = _httpClientFactory.CreateClient();
                 var response = await client.PostAsJsonAsync("http://host.docker.internal:5000/AddItem", item);
@@ -55,48 +62,81 @@ namespace ShortUrl.Web.Controllers
                 Item newItem = await response.Content.ReadFromJsonAsync<Item>();
                 return RedirectToAction(actionName: nameof(Details), routeValues: newItem);
             }
-
-            return View();
+            catch(HttpRequestException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(new Item());
+            }
         }
 
         [HttpGet]
         [Route("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
-            return View(item);
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient();
+                Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
+                return View(item);
+            }
+            catch(HttpRequestException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(new Item());
+            }
         }
 
         [HttpGet]
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
-            return View(item);
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient();
+                Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetItemById/{id}");
+                return View(item);
+            }
+            catch(HttpRequestException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View(new Item());
+            }
+
         }
 
         [HttpPost]
         [Route("Delete")]
         public async Task<IActionResult> DeleteItem(int id)
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-            var response = await client.DeleteAsync($"http://host.docker.internal:5000/DeleteItem/{id}");
-            if (response.IsSuccessStatusCode)
+            try
             {
+                HttpClient client = _httpClientFactory.CreateClient();
+                var response = await client.DeleteAsync($"http://host.docker.internal:5000/DeleteItem/{id}");
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Error");
+            catch(HttpRequestException ex) 
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
         }
 
         [HttpGet]
         [Route("{shortUrl}")]
         public async Task<IActionResult> GetTokenByUrl(string shortUrl)
         {
-            HttpClient client = _httpClientFactory.CreateClient();
-            Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetTokenByUrl/{shortUrl}");
-            return Redirect(item.OriginalUrl);
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient();
+                Item item = await client.GetFromJsonAsync<Item>($"http://host.docker.internal:5000/GetTokenByUrl/{shortUrl}");
+                return Redirect(item.OriginalUrl);
+            }
+            catch(HttpRequestException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
+
         }
 
         [HttpGet]
