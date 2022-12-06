@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortUrl.Api", "ShortUrl.Ap
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F5D50FC6-41D1-4790-848F-F1B5C1AFDD19}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{398A0FB1-FC16-4522-80CA-246A660ED0ED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortUrl.UnitTests", "ShortUrl.UnitTests\ShortUrl.UnitTests.csproj", "{E398EBA2-624B-42E2-B230-B03F563C6BD5}"
 EndProject
 Global
@@ -38,11 +36,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B9BD3C7A-0493-4DCC-B3D2-89CCD8525C40} = {398A0FB1-FC16-4522-80CA-246A660ED0ED}
-		{896C185C-EFE1-4E96-AA2C-942AFDB095F2} = {398A0FB1-FC16-4522-80CA-246A660ED0ED}
-		{E398EBA2-624B-42E2-B230-B03F563C6BD5} = {398A0FB1-FC16-4522-80CA-246A660ED0ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97975F73-9B16-4460-B228-2C258CA216C1}
