@@ -4,11 +4,11 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "shorturl.web",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/create",
+      "composeLaunchServiceName": "shorturl.api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
         "shorturl.api": "StartDebugging",
-        "shorturl.web": "StartDebugging",
+        "shorturl.web": "DoNotStart",
         "sqldata": "StartWithoutDebugging"
       }
     }

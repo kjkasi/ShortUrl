@@ -21,8 +21,8 @@ namespace ShortUrl.UnitTests
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
             mockRepository.Setup(s => s.GetAllItems()).ReturnsAsync(new List<Item> { new Item { }, new Item { } });
-            var logger = Mock.Of<ILogger<ItemController>>();
-            var itemController = new ItemController(logger, mockRepository.Object);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
 
             /// Act
             var result = await itemController.GetItems();
@@ -38,8 +38,8 @@ namespace ShortUrl.UnitTests
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
             mockRepository.Setup(s => s.GetItemById(1)).ReturnsAsync(new Item { Id = 1 });
-            var logger = Mock.Of<ILogger<ItemController>>();
-            var itemController = new ItemController(logger, mockRepository.Object);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
 
             /// Act
             var result = await itemController.GetItemById(1);
@@ -55,8 +55,8 @@ namespace ShortUrl.UnitTests
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
             mockRepository.Setup(s => s.GetItemById(1)).ReturnsAsync(null as Item);
-            var logger = Mock.Of<ILogger<ItemController>>();
-            var itemController = new ItemController(logger, mockRepository.Object);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
 
             /// Act
             var result = await itemController.GetItemById(1);
@@ -72,8 +72,8 @@ namespace ShortUrl.UnitTests
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
             mockRepository.Setup(s => s.GetItemByUrl(It.IsAny<string>())).ReturnsAsync(new Item { Id = 1 });
-            var logger = Mock.Of<ILogger<ItemController>>();
-            var itemController = new ItemController(logger, mockRepository.Object);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
 
             /// Act
             var result = await itemController.GetItemByUrl("http://ya.ru");
@@ -89,8 +89,8 @@ namespace ShortUrl.UnitTests
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
             mockRepository.Setup(s => s.GetItemByUrl(null)).ReturnsAsync(null as Item);
-            var logger = Mock.Of<ILogger<ItemController>>();
-            var itemController = new ItemController(logger, mockRepository.Object);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
 
             /// Act
             var result = await itemController.GetItemByUrl(null);
