@@ -28,8 +28,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItems();
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<List<Item>>((result as ObjectResult).Value);
+            Assert.IsType<ObjectResult>(result);
+            Assert.IsType<List<Item>>(((ObjectResult)result).Value);
         }
 
         [Fact]
@@ -45,8 +45,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemById(1);
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<Item>((result as ObjectResult).Value);
+            Assert.IsType<ObjectResult>(result);
+            Assert.IsType<Item>(((ObjectResult)result).Value);
         }
 
         [Fact]
@@ -62,8 +62,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemById(1);
 
             // Assert
-            Assert.Equal(404, (result as ObjectResult).StatusCode);
-            Assert.Null((result as ObjectResult).Value);
+            Assert.Equal(404, ((ObjectResult)result).StatusCode);
+            Assert.Null(((ObjectResult)result).Value);
         }
 
         [Fact]
@@ -79,8 +79,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemByUrl("http://ya.ru");
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<Item>((result as ObjectResult).Value);
+            Assert.IsType<ObjectResult>(result);
+            Assert.IsType<Item>(((ObjectResult)result).Value);
         }
 
         [Fact]
@@ -96,8 +96,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemByUrl(null);
 
             // Assert
-            Assert.Equal(404, (result as ObjectResult).StatusCode);
-            Assert.Null((result as ObjectResult).Value);
+            Assert.Equal(404, ((ObjectResult)result).StatusCode);
+            Assert.Null(((ObjectResult)result).Value);
         }
     }
 }

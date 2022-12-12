@@ -10,6 +10,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@if (Model != null)
+{
 <table class="table">
     <thead>
         <tr>
@@ -50,4 +52,9 @@
         </tr>
 }
     </tbody>
-</table>
+    </table>
+}
+else
+{
+    <p>No items found</p>
+}

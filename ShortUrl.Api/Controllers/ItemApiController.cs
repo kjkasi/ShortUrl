@@ -35,7 +35,7 @@ namespace ShortUrl.Api.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, null);
             }
         }
 
@@ -51,13 +51,13 @@ namespace ShortUrl.Api.Controllers
                 var item = await _repository.GetItemByUrl(shortUrl);
                 if (item is null)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound);
+                    return StatusCode(StatusCodes.Status404NotFound, null);
                 }
                 return StatusCode(StatusCodes.Status200OK, item);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, null);
             }
         }
 
@@ -73,13 +73,13 @@ namespace ShortUrl.Api.Controllers
                 var item = await _repository.GetItemById(id);
                 if (item is null)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound);
+                    return StatusCode(StatusCodes.Status404NotFound, null);
                 }
                 return StatusCode(StatusCodes.Status200OK, item);
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, null);
             }
         }
 
@@ -96,7 +96,7 @@ namespace ShortUrl.Api.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, null);
             }
         }
 
@@ -113,7 +113,7 @@ namespace ShortUrl.Api.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, null);
             }
         }
     }
