@@ -28,8 +28,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItems();
 
             // Assert
-            Assert.IsType<ObjectResult>(result);
-            Assert.IsType<List<Item>>(((ObjectResult)result).Value);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<List<Item>>(((OkObjectResult)result).Value);
         }
 
         [Fact]
@@ -45,8 +45,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemById(1);
 
             // Assert
-            Assert.IsType<ObjectResult>(result);
-            Assert.IsType<Item>(((ObjectResult)result).Value);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<Item>(((OkObjectResult)result).Value);
         }
 
         [Fact]
@@ -62,8 +62,7 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemById(1);
 
             // Assert
-            Assert.Equal(404, ((ObjectResult)result).StatusCode);
-            Assert.Null(((ObjectResult)result).Value);
+            Assert.Equal(404, ((NotFoundResult)result).StatusCode);
         }
 
         [Fact]
@@ -79,8 +78,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemByUrl("http://ya.ru");
 
             // Assert
-            Assert.IsType<ObjectResult>(result);
-            Assert.IsType<Item>(((ObjectResult)result).Value);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<Item>(((OkObjectResult)result).Value);
         }
 
         [Fact]
@@ -96,8 +95,42 @@ namespace ShortUrl.UnitTests
             var result = await itemController.GetItemByUrl(null);
 
             // Assert
-            Assert.Equal(404, ((ObjectResult)result).StatusCode);
-            Assert.Null(((ObjectResult)result).Value);
+            Assert.Equal(404, ((NotFoundResult)result).StatusCode);
+        }
+
+        [Fact]
+        public async Task AddItemReturn200Status()
+        {
+            // Arrange
+            var mockRepository = new Mock<IItemRepository>();
+            mockRepository.Setup(s => s.CreateItem(It.IsAny<Item>())).ReturnsAsync(true);
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
+
+            /// Act
+            var result = await itemController.AddItem(new Item { OriginalUrl = "http://ya.ru" });
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<Item>(((OkObjectResult)result).Value);
+        }
+
+        [Fact]
+        public async Task DeleteItemReturn200Status()
+        {
+            // Arrange
+            var mockRepository = new Mock<IItemRepository>();
+            mockRepository.Setup(s => s.DeleteItem(It.IsAny<Item>())).ReturnsAsync(true);
+            mockRepository.Setup(s => s.GetItemById(1)).ReturnsAsync(new Item { Id = 1 });
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
+
+            /// Act
+            var result = await itemController.DeleteItem(1);
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<bool>(((OkObjectResult)result).Value);
         }
     }
 }
