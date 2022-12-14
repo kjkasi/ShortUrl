@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShortUrl.Api.Models;
 using ShortUrl.Api.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace ShortUrl.Api.Controllers
 {
-    [Route("item")]
     [ApiController]
+    [Route("item")]
     public class ItemApiController : ControllerBase
     {
         private readonly ILogger<ItemApiController> _logger;
@@ -24,97 +25,75 @@ namespace ShortUrl.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        [ProducesResponseType(typeof(IEnumerable<Item>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         public async Task<ActionResult> GetItems()
         {
-            try
-            {
-                var items = await _repository.GetAllItems();
-                return StatusCode(StatusCodes.Status200OK, items);
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, null);
-            }
+            var items = await _repository.GetAllItems();
+            return Ok(items);
         }
 
         [HttpGet]
         [Route("{shortUrl}")]
-        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
         public async Task<ActionResult> GetItemByUrl(string shortUrl)
         {
-            try
+            var item = await _repository.GetItemByUrl(shortUrl);
+            if (item is null)
             {
-                var item = await _repository.GetItemByUrl(shortUrl);
-                if (item is null)
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, null);
-                }
-                return StatusCode(StatusCodes.Status200OK, item);
+                return NotFound();
             }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, null);
-            }
+            return Ok(item);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
         public async Task<ActionResult> GetItemById(int id)
         {
-            try
+
+            var item = await _repository.GetItemById(id);
+            if (item is null)
             {
-                var item = await _repository.GetItemById(id);
-                if (item is null)
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, null);
-                }
-                return StatusCode(StatusCodes.Status200OK, item);
+                return NotFound();
             }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, null);
-            }
+            return Ok(item);
         }
 
         [HttpPost]
         [Route("")]
-        [ProducesResponseType(typeof(Item), (int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Produces("application/json")]
         public async Task<ActionResult> AddItem(Item item)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var newItem = await _repository.CreateItem(item);
-                return StatusCode(StatusCodes.Status201Created, newItem);
+                return BadRequest(ModelState);
             }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, null);
-            }
+            await _repository.CreateItem(item);
+            return Ok(item);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
         public async Task<ActionResult> DeleteItem(int id)
         {
-            try
+            var item = await _repository.GetItemById(id);
+            if (item is null)
             {
-                var result = await _repository.DeleteItem(id);
-                return StatusCode(StatusCodes.Status201Created, result);
+                return NotFound();
             }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, null);
-            }
+
+            var isSuccess = await _repository.DeleteItem(item);
+            return Ok(isSuccess);
         }
     }
 }
