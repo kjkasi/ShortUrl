@@ -6,10 +6,11 @@ namespace ShortUrl.Api.Repositories
 {
     public interface IItemRepository
     {
-        Task<bool> CreateItem(Item item);
-        Task<Item> GetItemByUrl(string shortUrl);
         Task<IEnumerable<Item>> GetAllItems();
+        Task<bool> CreateItem(Item item);
         Task<Item> GetItemById(int id);
+        Task<Item> GetItemByUrl(string shortUrl);
+        Task<bool> UpdateItem(Item item);       
         Task<bool> DeleteItem(Item item);
     }
 }

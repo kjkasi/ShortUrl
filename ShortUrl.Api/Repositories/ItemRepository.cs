@@ -44,7 +44,7 @@ namespace ShortUrl.Api.Repositories
 
                 return true;
             }
-            catch (Exception ex)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -58,7 +58,7 @@ namespace ShortUrl.Api.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception ex)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -79,6 +79,21 @@ namespace ShortUrl.Api.Repositories
         {
             Item item = await _context.Items.Where(x => x.ShortUrl == shortUrl).FirstOrDefaultAsync();
             return item;
+        }
+
+        public async Task<bool> UpdateItem(Item item)
+        {
+            try
+            {
+                _context.Update(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
         }
     }
 }

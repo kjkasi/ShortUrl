@@ -24,7 +24,6 @@ namespace ShortUrl.Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         public async Task<ActionResult> GetItems()
@@ -34,28 +33,12 @@ namespace ShortUrl.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{shortUrl}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces("application/json")]
-        public async Task<ActionResult> GetItemByUrl(string shortUrl)
-        {
-            var item = await _repository.GetItemByUrl(shortUrl);
-            if (item is null)
-            {
-                return NotFound();
-            }
-            return Ok(item);
-        }
-
-        [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Produces("application/json")]
         public async Task<ActionResult> GetItemById(int id)
         {
-
             var item = await _repository.GetItemById(id);
             if (item is null)
             {
@@ -64,9 +47,27 @@ namespace ShortUrl.Api.Controllers
             return Ok(item);
         }
 
-        [HttpPost]
-        [Route("")]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+                [Produces("application/json")]
+        public async Task<ActionResult> UpdateItem(int id, Item item)
+        {
+            if (id != item.Id)
+                return BadRequest();
+
+            Item existingItem = await _repository.GetItemById(id);
+            if (existingItem is null)
+                return NotFound();
+
+            var isSuccess = await _repository.UpdateItem(existingItem);
+
+            return Ok(isSuccess);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
         public async Task<ActionResult> AddItem(Item item)
@@ -76,7 +77,7 @@ namespace ShortUrl.Api.Controllers
                 return BadRequest(ModelState);
             }
             await _repository.CreateItem(item);
-            return Ok(item);
+            return CreatedAtAction(nameof(GetItemById), new { id = item.Id }, item);
         }
 
         [HttpDelete]
@@ -94,6 +95,21 @@ namespace ShortUrl.Api.Controllers
 
             var isSuccess = await _repository.DeleteItem(item);
             return Ok(isSuccess);
+        }
+
+        [HttpGet]
+        [Route("{shortUrl}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Produces("application/json")]
+        public async Task<ActionResult> GetItemByUrl(string shortUrl)
+        {
+            var item = await _repository.GetItemByUrl(shortUrl);
+            if (item is null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
         }
     }
 }

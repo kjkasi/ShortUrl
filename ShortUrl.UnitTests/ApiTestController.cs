@@ -13,7 +13,7 @@ using Xunit;
 
 namespace ShortUrl.UnitTests
 {
-    public class ApiController
+    public class ApiTestController
     {
         [Fact]
         public async Task GetAllReturn200Status()
@@ -99,7 +99,7 @@ namespace ShortUrl.UnitTests
         }
 
         [Fact]
-        public async Task AddItemReturn200Status()
+        public async Task AddItemReturn201Status()
         {
             // Arrange
             var mockRepository = new Mock<IItemRepository>();
@@ -111,8 +111,8 @@ namespace ShortUrl.UnitTests
             var result = await itemController.AddItem(new Item { OriginalUrl = "http://ya.ru" });
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<Item>(((OkObjectResult)result).Value);
+            Assert.IsType<CreatedAtActionResult>(result);
+            Assert.IsType<Item>(((CreatedAtActionResult)result).Value);
         }
 
         [Fact]
@@ -127,6 +127,24 @@ namespace ShortUrl.UnitTests
 
             /// Act
             var result = await itemController.DeleteItem(1);
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<bool>(((OkObjectResult)result).Value);
+        }
+
+        [Fact]
+        public async Task UpdateItemReturn200Status()
+        {
+            // Arrange
+            var mockRepository = new Mock<IItemRepository>();
+            mockRepository.Setup(s => s.UpdateItem(It.IsAny<Item>())).ReturnsAsync(true);
+            mockRepository.Setup(s => s.GetItemById(1)).ReturnsAsync(new Item { Id = 1 });
+            var logger = Mock.Of<ILogger<ItemApiController>>();
+            var itemController = new ItemApiController(logger, mockRepository.Object);
+
+            /// Act
+            var result = await itemController.UpdateItem(1, new Item { Id = 1 });
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
