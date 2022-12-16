@@ -40,10 +40,10 @@
                 @Html.DisplayFor(modelItem => item.OriginalUrl)
             </td>
             <td>
-                <a href=@formatter.GetFormattedShortUrl(item.ShortUrl)>@item.ShortUrl</a>
+                <a href=@formatter.GetShortUrl(item.ShortUrl)>@item.ShortUrl</a>
             </td>
             <td>
-                <a href=@formatter.GetFormattedFileName(item.FileName)>@item.FileName</a>
+                <a href=@formatter.GetFileName(item.FileName)>@item.FileName</a>
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new { id=item.Id }) |

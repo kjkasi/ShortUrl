@@ -2,7 +2,7 @@
 {
     public interface IFormatService
     {
-        string GetFormattedFileName(string fileName);
-        string GetFormattedShortUrl(string shortUrl);
+        string GetFileName(string fileName);
+        string GetShortUrl(string shortUrl);
     }
 }
