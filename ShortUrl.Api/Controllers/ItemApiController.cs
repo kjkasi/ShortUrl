@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ShortUrl.Api.Models;
 using ShortUrl.Api.Repositories;
@@ -25,7 +27,6 @@ namespace ShortUrl.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Produces("application/json")]
         public async Task<ActionResult> GetItems()
         {
             var items = await _repository.GetAllItems();
@@ -36,7 +37,6 @@ namespace ShortUrl.Api.Controllers
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces("application/json")]
         public async Task<ActionResult> GetItemById(int id)
         {
             var item = await _repository.GetItemById(id);
@@ -51,7 +51,6 @@ namespace ShortUrl.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-                [Produces("application/json")]
         public async Task<ActionResult> UpdateItem(int id, Item item)
         {
             if (id != item.Id)
@@ -69,7 +68,6 @@ namespace ShortUrl.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Produces("application/json")]
         public async Task<ActionResult> AddItem(Item item)
         {
             if (!ModelState.IsValid)
@@ -84,7 +82,6 @@ namespace ShortUrl.Api.Controllers
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces("application/json")]
         public async Task<ActionResult> DeleteItem(int id)
         {
             var item = await _repository.GetItemById(id);
@@ -101,7 +98,6 @@ namespace ShortUrl.Api.Controllers
         [Route("{shortUrl}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Produces("application/json")]
         public async Task<ActionResult> GetItemByUrl(string shortUrl)
         {
             var item = await _repository.GetItemByUrl(shortUrl);

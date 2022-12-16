@@ -1,6 +1,8 @@
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +39,17 @@ namespace ShortUrl.Api
             );
 
             services.AddControllers();
+            services.AddProblemDetails(opt =>
+            {
+                // Control when an exception is included
+                opt.IncludeExceptionDetails = (ctx, ex) =>
+                {
+                    // Fetch services from HttpContext.RequestServices
+                    var env = ctx.RequestServices.GetRequiredService<IHostEnvironment>();
+                    return env.IsDevelopment() || env.IsStaging();
+                };
+            });
+            //builder.Services.AddTransient<ProblemDetailsFactory, SampleProblemDetailsFactory>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShortUrl.Api", Version = "v1" });
@@ -46,9 +59,10 @@ namespace ShortUrl.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ItemContext context)
         {
+            app.UseProblemDetails();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShortUrl.Api v1"));
             }
