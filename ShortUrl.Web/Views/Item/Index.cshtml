@@ -1,5 +1,8 @@
-﻿@model IEnumerable<ShortUrl.Web.Models.Item>
-@inject ShortUrl.Web.Services.IFormatService formatter
+﻿@using ShortUrl.Web.Models
+@using ShortUrl.Web.Services
+
+@model IEnumerable<Item>
+@inject IFormatService formatter
 
 @{
     ViewData["Title"] = "Index";
@@ -34,16 +37,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayTextFor(model => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OriginalUrl)
+                @Html.DisplayTextFor(model => item.OriginalUrl)
             </td>
             <td>
-                <a href=@formatter.GetShortUrl(item.ShortUrl)>@item.ShortUrl</a>
+                @Html.DisplayTextFor(model => item.ShortUrl)
             </td>
             <td>
-                <a href=@formatter.GetFileName(item.FileName)>@item.FileName</a>
+                @Html.DisplayTextFor(model => item.FileName)
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new { id=item.Id }) |

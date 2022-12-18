@@ -27,13 +27,13 @@
             @Html.DisplayNameFor(model => model.ShortUrl)
         </dt>
         <dd class="col-sm-10">
-            <a href=@formatter.GetFormattedShortUrl(Model.ShortUrl)>@formatter.GetFormattedShortUrl(Model.ShortUrl)</a>
+            <a href=@formatter.GetShortUrl(Model.ShortUrl)>@formatter.GetShortUrl(Model.ShortUrl)</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FileName)
         </dt>
         <dd class="col-sm-10">
-           <img alt=@Model.OriginalUrl src=@formatter.GetFormattedFileName(Model.FileName) width="150" height="150" />
+            <img alt=@formatter.GetShortUrl(Model.ShortUrl) src=@formatter.GetFileName(Model.FileName) width="150" height="150" asp-append-version="true" />
         </dd>
     </dl>
 </div>
